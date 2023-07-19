@@ -1,0 +1,120 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.prochel.mapper.AdminMapper">
+
+	<!-- 상품 등록 -->
+  	<insert id="ProdEnroll">
+  	
+  		<selectKey resultType="int" keyProperty="prodId" order="AFTER">
+  		
+  			SELECT ISEQ$$_82567.CURRVAL from dual
+  		
+  		</selectKey>
+  	
+  		insert into prod_home(ProdName, authorId, publeYear, publisher, cateCode, ProdPrice, ProdStock, ProdDiscount, ProdIntro, ProdContents)
+		values(#{ProdName,jdbcType=VARCHAR},#{authorId}, #{publeYear},#{publisher},#{cateCode},#{ProdPrice},#{ProdStock},#{ProdDiscount},#{ProdIntro,jdbcType=VARCHAR},#{ProdContents,jdbcType=VARCHAR})
+
+  	</insert>
+  	
+  	<!-- 카테고리 리스트 -->
+  	<select id="cateList" resultType="com.prochel.model.CateVO">
+  	
+  		select * from prod_bcate order by catecode
+  	
+  	</select>
+  	
+  	<!-- 상품 리스트 -->
+  	<select id="goodsGetList" resultType="com.prochel.model.ProdVO">
+  	
+	  	<![CDATA[
+		select * from(
+		    select /*+INDEX_DESC(PROD_HOME SYS_C0012676)*/ rownum as rn, ProdId, ProdName,
+		        (select authorName from SELLER_AUTHOR where PROD_HOME.authorId = SELLER_AUTHOR.authorId) authorName,
+		        (select cateName from PROD_BCATE where PROD_HOME.cateCode = PROD_BCATE.cateCode) cateName,ProdStock,regDate
+		    from PROD_HOME
+		    where 
+		]]>    
+		
+		    <if test="keyword != null">
+		    
+			    ProdName like '%' || #{keyword} || '%' and
+			    
+		    </if>
+		     
+		<![CDATA[    
+		    rownum <= #{pageNum} * #{amount} 
+		    )
+		where rn > (#{pageNum} -1) * #{amount}		  	
+  		]]>
+  	
+  	</select>
+  	
+  	<!-- 상품 총 개수 -->
+  	<select id="goodsGetTotal" resultType="int">
+  	
+  		select count(*) from PROD_HOME
+  		
+  		<if test="keyword != null">
+  		
+  			where ProdName like '%' || #{keyword} || '%'
+  		</if>
+  		
+  	</select>
+  	
+  	<!-- 상품 조회 페이지 -->
+	<select id="goodsGetDetail" resultType="com.prochel.model.ProdVO">
+	
+		select ProdId, ProdName, (select authorName from SELLER_AUTHOR where authorId = PROD_HOME.authorId) authorName, 
+			authorId, publeYear, publisher, cateCode, ProdPrice, ProdStock, ProdDiscount, ProdIntro, ProdContents, regDate, updateDate 
+		from PROD_HOME where ProdId = #{prodId}
+	
+	</select> 
+	
+	<!-- Oracle -->
+	<!-- 상품 정보 수정 -->
+	<update id="goodsModify">
+		
+		update PROD_HOME set ProdName = #{prodName}, authorId = #{authorId}, publeYear = #{publeYear}, publisher = #{publisher}, cateCode = #{cateCode}, 
+		ProdPrice = #{prodPrice}, ProdStock = #{prodStock}, ProdDiscount = #{prodDiscount}, ProdIntro = #{prodIntro}, ProdContents = #{prodContents}, updateDate = sysdate
+		where ProdId = #{prodId}
+		
+	</update>
+	
+	<!-- 상품 정보 삭제 -->
+	<delete id="goodsDelete">
+	
+		delete from PROD_HOME where prodId = #{prodId}
+	
+	</delete>
+	
+	<!-- 이미지 등록 -->
+	<insert id="imageEnroll">
+	
+		insert into PROD_IMAGE(ProdId, fileName, uploadPath, uuid) values (#{prodId}, #{fileName}, #{uploadPath}, #{uuid})
+	
+	</insert>
+	
+	<!-- 지정 상품 이미지 전체 삭제 --> 
+	<delete id="deleteImageAll">
+	
+		delete FROM PROD_IMAGE where prodId = #{prodId}
+	
+	</delete>
+	
+	<!-- Oracle -->
+	<!-- 어제자 날자 이미지 리스트 -->
+	<select id="checkFileList" resultType="com.prochel.model.AttachImageVO">
+	
+		select * from PROD_IMAGE where uploadpath = to_char(sysdate -1, 'yyyy\mm\dd')	
+	
+	</select>
+	
+	<!-- 지정 상품 이미지 정보 얻기 -->
+	<select id="getAttachInfo" resultType="com.prochel.model.AttachImageVO">
+	
+		select * from PROD_IMAGE where prodId = #{prodId}
+	
+	</select>
+
+  </mapper>

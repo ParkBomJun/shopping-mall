@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.prochel.mapper.ProdMapper">
+
+	<!-- criteria(검색조건) -->
+	<sql id="criteria">
+	
+		<trim prefix="(" suffix=") AND" prefixOverrides="AND">
+			<foreach item="type" collection="typeArr">
+			<trim prefix="AND">
+			 <choose>
+			 	<when test="type == 'A'.toString()">
+			 		<trim prefixOverrides="or">
+			 			<foreach collection="authorArr" item="authorId">
+			 				<trim prefix="or">
+			 					authorId = #{authorId}
+			 				</trim>
+			 		</foreach>
+			 		</trim>
+			 	</when>	
+			 	<when test="type == 'C'.toString()">
+			 		cateCode like '%' || #{cateCode} || '%'
+			 	</when>
+			 	<when test="type == 'T'.toString()">
+			 		ProdName like '%' || #{keyword} || '%'
+			 	</when>
+			 </choose>
+			 </trim>
+			</foreach>		
+		</trim>
+	</sql>
+
+	
+	<!-- 상품 검색 -->
+	<select id="getGoodsList" resultType="com.prochel.model.ProdVO">
+	
+		<![CDATA[
+		    select * from(
+		        select /*+INDEX_DESC(SYS_C0012676)*/ rownum as rn, ProdId, ProdName,
+		            (select authorName from SELLER_AUTHOR where PROD_HOME.authorId = SELLER_AUTHOR.authorId) authorName, authorId,
+		            (select cateName from PROD_BCATE where PROD_HOME.cateCode = PROD_BCATE.cateCode) cateName,cateCode, publisher, publeYear, ProdPrice  
+		        from PROD_HOME
+		        where 
+				
+				ProdName like '%' || #{keyword} || '%' and
+	           
+		        rownum <= #{pageNum} * #{amount} 
+	        	)
+	        where rn > (#{pageNum} -1) * #{amount} 		
+	      ]]>
+	</select>
+	
+	<!-- 판매자 검색 -->
+	<select id="getGoodsList2" resultType="com.prochel.model.ProdVO">
+	
+		<![CDATA[
+		    select * from(
+		        select /*+INDEX_DESC(SYS_C0012676)*/ rownum as rn, ProdId, ProdName,
+		            (select authorName from SELLER_AUTHOR where PROD_HOME.authorId = SELLER_AUTHOR.authorId) authorName, authorId,
+		            (select cateName from PROD_BCATE where PROD_HOME.cateCode = PROD_BCATE.cateCode) cateName,cateCode, publisher, publeYear, ProdPrice  
+		        from PROD_HOME
+		        where 
+		        
+		        authorId = #{authorId} and
+	       
+		        rownum <= #{pageNum} * #{amount} 
+	        	)
+	        where rn > (#{pageNum} -1) * #{amount}  	
+	       ]]>	
+	
+	</select>
+	
+	<!-- 상품 검색(책 제목 + 카테고리) -->
+	<select id="getGoodsList3" resultType="com.prochel.model.ProdVO">
+	
+		<![CDATA[
+		    select * from(
+		        select /*+INDEX_DESC(SYS_C0012676)*/ rownum as rn, ProdId, ProdName,
+		            (select authorName from SELLER_AUTHOR where PROD_HOME.authorId = SELLER_AUTHOR.authorId) authorName, authorId,
+		            (select cateName from PROD_BCATE where PROD_HOME.cateCode = PROD_BCATE.cateCode) cateName,cateCode, publisher, publeYear, ProdPrice  
+		        from PROD_HOME
+		        where 
+		        
+		         ProdName like '%' || #{keyword} || '%' and cateCode like '%' || #{cateCode} || '%' and
+	       
+		        rownum <= #{pageNum} * #{amount} 
+	        	)
+	        where rn > (#{pageNum} -1) * #{amount}  	
+	       ]]>	
+	
+	</select>
+	
+	<!-- 상품 총 개수 -->
+	<select id="goodsGetTotal" resultType="int">
+	
+		select count(*) from PROD_HOME
+		where
+		<include refid="criteria"></include> 
+		ProdId >0
+		
+	</select>
+	
+    <!-- 작가 id 리스트 요청 -->
+	<select id="getAuthorIdList" resultType="String">
+	
+		select authorId from SELLER_AUTHOR where authorName like '%' || #{keyword} || '%'
+	
+	</select>
+	
+  </mapper>

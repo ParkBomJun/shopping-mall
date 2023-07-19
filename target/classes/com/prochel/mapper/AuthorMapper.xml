@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.prochel.mapper.AuthorMapper">
+  
+      <!-- 판매자 등록 -->
+      <insert id="authorEnroll">
+      
+          insert into seller_author(authorName, SellerId, authorIntro) values(#{authorName, jdbcType=VARCHAR}, #{SellerId, jdbcType=VARCHAR}, #{authorIntro, jdbcType=VARCHAR} )
+ 
+      </insert>
+      
+      <!-- 판매자 목록 -->
+      <select id="authorGetList" resultType="com.prochel.model.AuthorVO">
+      
+      <![CDATA[
+          select * from (
+              select /*+INDEX_DESC(SELLER_AUTHOR SYS_C0012520) */ 
+                  rownum as rn, authorid, authorname, sellerId, regdate, updatedate
+            from SELLER_AUTHOR
+            where
+             
+    ]]>         
+            <if test="keyword != null">
+                authorname like '%'||#{keyword}||'%' and
+            </if>
+            
+    <![CDATA[        
+             rownum <= #{pageNum}*#{amount}
+            )
+        where rn > (#{pageNum} - 1) * #{amount}
+      ]]>
+      
+      </select>
+      
+      <!-- 판매자 수 -->
+      <select id="authorGetTotal" resultType="int">
+      
+          select count(*) from SELLER_AUTHOR
+          
+          <if test="keyword != null">
+          
+             where authorname like '%' || #{keyword} || '%'
+          
+          </if>
+          
+      </select> 
+      
+      <!-- 판매자 디테일 페이지 -->
+  	<select id="authorGetDetail" resultType="com.prochel.model.AuthorVO">
+  	
+  		select * from SELLER_AUTHOR where authorid = #{authorId}
+  	
+  	</select>
+  	
+  	<!-- 판매자 정보 수정 -->
+  	<update id="authorModify">
+  	
+  		update SELLER_AUTHOR set authorName=#{authorName}, SellerId=#{SellerId}, authorIntro=#{authorIntro}, updatedate=sysdate where authorId = #{authorId}
+  	
+  	</update>
+  	
+  	<!-- 작가 정보 삭제 -->
+  	<delete id="authorDelete">
+  	
+  		delete from SELLER_AUTHOR where authorId = #{authorId}
+  	
+  	</delete>
+      
+  </mapper>
