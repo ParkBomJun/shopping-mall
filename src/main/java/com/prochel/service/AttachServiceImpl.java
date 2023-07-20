@@ -11,7 +11,6 @@ import com.prochel.model.AttachImageVO;
 import lombok.extern.log4j.Log4j;
 
 @Service
-@Log4j
 public class AttachServiceImpl implements AttachService {
 	
 	@Autowired
@@ -21,8 +20,6 @@ public class AttachServiceImpl implements AttachService {
 	/* 이미지 데이터 반환 */
 	@Override
 	public List<AttachImageVO> getAttachList(int prodId) {
-		
-		log.info("getAttachList.........");
 		
 		return attachMapper.getAttachList(prodId);
 	}

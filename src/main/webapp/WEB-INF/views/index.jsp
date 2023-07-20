@@ -41,16 +41,30 @@
                 		</form>
                 	</div>
                         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <c:if test="${ member == null }">
+                        <li class="nav-item"><a class="nav-link" href="/admin/index">상품목록</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/index">기업목록</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/index">개인 판매 신청</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/index">기업 판매 신청</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/goodsenroll">고객센터</a></li>
+                        </c:if>
+                        <c:if test="${ member != null }">
+                        	<c:if test="${ member.adminCk == 0 }">
+                        <li class="nav-item"><a class="nav-link" href="/admin/index">상품목록</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/index">기업목록</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/index">개인 판매 신청</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/index">기업 판매 신청</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/goodsenroll">고객센터</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/goodsenroll">로그아웃</a></li>
+                        </c:if>
+                        </c:if>
+                            	<c:if test="${ member.adminCk == 1 }">
                             <li class="nav-item"><a class="nav-link" href="/admin/goodsenroll">상품등록</a></li>
                             <li class="nav-item"><a class="nav-link" href="/admin/goodsManage">상품목록</a></li>
                             <li class="nav-item"><a class="nav-link" href="/admin/authorEnroll">판매자등록</a></li>
                             <li class="nav-item"><a class="nav-link" href="/admin/authorManage">판매자관리</a></li>
                             <li class="nav-item"><a class="nav-link" href="/admin/qna">고객센터</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/index">메인 페이지</a></li>
-                            <c:if test="${ member != null }">
-                            	<c:if test="${ member.adminCk == 1 }">
                             <li class="nav-item"><a class="nav-link" href="/admin/index">관리자 페이지</a></li>
-                            </c:if>
                             </c:if>
                             <li>
 	                        <a id="gnb_logout_button">로그아웃</a>

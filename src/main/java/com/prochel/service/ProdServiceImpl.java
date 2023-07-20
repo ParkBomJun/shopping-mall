@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.prochel.mapper.AttachMapper;
 import com.prochel.mapper.ProdMapper;
+import com.prochel.model.AttachImageVO;
 import com.prochel.model.Criteria;
 import com.prochel.model.ProdVO;
 
@@ -18,12 +20,13 @@ public class ProdServiceImpl implements ProdService {
 	
 	@Autowired
 	private ProdMapper prodMapper;
+	
+	@Autowired
+	private AttachMapper attachMapper;
 
 	/* 상품 검색 */
 	@Override
 	public List<ProdVO> getGoodsList(Criteria cri) {
-		
-		log.info("getGoodsList().......");
 		
 		String type = cri.getType();
 		String[] typeArr = type.split("");
@@ -36,20 +39,30 @@ public class ProdServiceImpl implements ProdService {
 			}
 		}
 		
-		for(String t : typeArr) {
-			if(t.equals("A")) {
+		for(String T : typeArr) {
+			if(T.equals("A")) {
 				cri.setAuthorArr(authorArr);
 			}
 		}
 		
-		return prodMapper.getGoodsList(cri);
+		List<ProdVO> list = prodMapper.getGoodsList(cri);
+		
+		list.forEach(prod -> {
+			
+			int prodId = prod.getProdId();
+			
+			List<AttachImageVO> imageList = attachMapper.getAttachList(prodId);
+			
+			prod.setImageList(imageList);
+			
+		});
+		
+		return list;
 	}
 
-	/* 사품 총 갯수 */
+	/* 상품 총 갯수 */
 	@Override
 	public int goodsGetTotal(Criteria cri) {
-		
-		log.info("goodsGetTotal().......");
 		
 		return prodMapper.goodsGetTotal(cri);
 		

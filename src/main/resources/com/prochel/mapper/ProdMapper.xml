@@ -31,6 +31,13 @@
 			</foreach>		
 		</trim>
 	</sql>
+	
+	 <!-- 작가 id 리스트 요청 -->
+	<select id="getAuthorIdList" resultType="String">
+	
+		select authorId from SELLER_AUTHOR where authorName like '%' || #{keyword} || '%'
+	
+	</select>
 
 	
 	<!-- 상품 검색 -->
@@ -40,7 +47,7 @@
 		    select * from(
 		        select /*+INDEX_DESC(SYS_C0012676)*/ rownum as rn, ProdId, ProdName,
 		            (select authorName from SELLER_AUTHOR where PROD_HOME.authorId = SELLER_AUTHOR.authorId) authorName, authorId,
-		            (select cateName from PROD_BCATE where PROD_HOME.cateCode = PROD_BCATE.cateCode) cateName,cateCode, publisher, publeYear, ProdPrice  
+		            (select cateName from PROD_BCATE where PROD_HOME.cateCode = PROD_BCATE.cateCode) cateName,cateCode, publisher, publeYear, ProdPrice, ProdDiscount 
 		        from PROD_HOME
 		        where 
 				
@@ -63,7 +70,7 @@
 		        from PROD_HOME
 		        where 
 		        
-		        authorId = #{authorId} and
+		        authorId = #{authorId} AND
 	       
 		        rownum <= #{pageNum} * #{amount} 
 	        	)
@@ -100,13 +107,6 @@
 		<include refid="criteria"></include> 
 		ProdId >0
 		
-	</select>
-	
-    <!-- 작가 id 리스트 요청 -->
-	<select id="getAuthorIdList" resultType="String">
-	
-		select authorId from SELLER_AUTHOR where authorName like '%' || #{keyword} || '%'
-	
 	</select>
 	
   </mapper>
