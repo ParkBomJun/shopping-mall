@@ -1,3 +1,4 @@
-# Practicing-shopping-mall
-# shopping-mall
-# shopping-mall
+# shopping-mall ver 0.1
+
+비로그인 | 로그인 | 관리자 별 메인 페이지 메뉴 페이지 완성
+상품명 검색 & 검색 결과 목록 구현
