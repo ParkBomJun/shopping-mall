@@ -24,78 +24,34 @@
 			 		cateCode like '%' || #{cateCode} || '%'
 			 	</when>
 			 	<when test="type == 'T'.toString()">
-			 		ProdName like '%' || #{keyword} || '%'
+			 		ProdName like '%' || #{keyword,jdbcType=VARCHAR} || '%'
 			 	</when>
 			 </choose>
 			 </trim>
 			</foreach>		
 		</trim>
 	</sql>
-	
-	 <!-- 작가 id 리스트 요청 -->
-	<select id="getAuthorIdList" resultType="String">
-	
-		select authorId from SELLER_AUTHOR where authorName like '%' || #{keyword} || '%'
-	
-	</select>
 
 	
-	<!-- 상품 검색 -->
+	<!-- 상품 검색(책 제목 + 카테고리) -->
 	<select id="getGoodsList" resultType="com.prochel.model.ProdVO">
 	
 		<![CDATA[
 		    select * from(
 		        select /*+INDEX_DESC(SYS_C0012676)*/ rownum as rn, ProdId, ProdName,
 		            (select authorName from SELLER_AUTHOR where PROD_HOME.authorId = SELLER_AUTHOR.authorId) authorName, authorId,
-		            (select cateName from PROD_BCATE where PROD_HOME.cateCode = PROD_BCATE.cateCode) cateName,cateCode, publisher, publeYear, ProdPrice, ProdDiscount 
+		            (select cateName from PROD_BCATE where PROD_HOME.cateCode = PROD_BCATE.cateCode) cateName,cateCode, publisher, publeYear, ProdPrice, ProdDiscount  
 		        from PROD_HOME
 		        where 
-				
-				ProdName like '%' || #{keyword} || '%' and
-	           
+	    ]]>
+	    
+	    <include refid="criteria"></include>
+	    
+	    <![CDATA[
 		        rownum <= #{pageNum} * #{amount} 
 	        	)
-	        where rn > (#{pageNum} -1) * #{amount} 		
-	      ]]>
-	</select>
-	
-	<!-- 판매자 검색 -->
-	<select id="getGoodsList2" resultType="com.prochel.model.ProdVO">
-	
-		<![CDATA[
-		    select * from(
-		        select /*+INDEX_DESC(SYS_C0012676)*/ rownum as rn, ProdId, ProdName,
-		            (select authorName from SELLER_AUTHOR where PROD_HOME.authorId = SELLER_AUTHOR.authorId) authorName, authorId,
-		            (select cateName from PROD_BCATE where PROD_HOME.cateCode = PROD_BCATE.cateCode) cateName,cateCode, publisher, publeYear, ProdPrice  
-		        from PROD_HOME
-		        where 
-		        
-		        authorId = #{authorId} AND
-	       
-		        rownum <= #{pageNum} * #{amount} 
-	        	)
-	        where rn > (#{pageNum} -1) * #{amount}  	
-	       ]]>	
-	
-	</select>
-	
-	<!-- 상품 검색(책 제목 + 카테고리) -->
-	<select id="getGoodsList3" resultType="com.prochel.model.ProdVO">
-	
-		<![CDATA[
-		    select * from(
-		        select /*+INDEX_DESC(SYS_C0012676)*/ rownum as rn, ProdId, ProdName,
-		            (select authorName from SELLER_AUTHOR where PROD_HOME.authorId = SELLER_AUTHOR.authorId) authorName, authorId,
-		            (select cateName from PROD_BCATE where PROD_HOME.cateCode = PROD_BCATE.cateCode) cateName,cateCode, publisher, publeYear, ProdPrice  
-		        from PROD_HOME
-		        where 
-		        
-		         ProdName like '%' || #{keyword} || '%' and cateCode like '%' || #{cateCode} || '%' and
-	       
-		        rownum <= #{pageNum} * #{amount} 
-	        	)
-	        where rn > (#{pageNum} -1) * #{amount}  	
-	       ]]>	
+	        where rn > (#{pageNum} -1) * #{amount}
+		]]>
 	
 	</select>
 	
@@ -108,5 +64,29 @@
 		ProdId >0
 		
 	</select>
+	
+		 <!-- 작가 id 리스트 요청 -->
+	<select id="getAuthorIdList" resultType="String">
+	
+		select authorId from SELLER_AUTHOR where authorName like '%' || #{keyword,jdbcType=VARCHAR} || '%'
+	
+	</select>
+	
+	<!-- 개인 카테고리 리스트 -->
+	<select id="getCateCode1" resultType="com.prochel.model.CateVO">
+
+		<![CDATA[
+			select * from prod_bcate where cateCode > 100000 and cateCode < 200000
+		]]>
+	</select>
+
+	<!-- 기업 카테고리 리스트 -->
+	<select id="getCateCode2" resultType="com.prochel.model.CateVO">
+
+		<![CDATA[
+			select * from prod_bcate where cateCode > 200000 and cateCode < 300000
+		]]>
+
+	</select>	
 	
   </mapper>

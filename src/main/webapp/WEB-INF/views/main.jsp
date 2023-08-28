@@ -15,7 +15,7 @@
         <!-- Bootstrap icons-->
         <link href="https://cdn.js delivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="resources/css/member/search.css" rel="stylesheet" />
+        <link href="resources/css/member/main.css" rel="stylesheet" />
         <script
 		  src="https://code.jquery.com/jquery-3.4.1.js"
 		  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
@@ -41,30 +41,17 @@
                 		</form>
                 	</div>
                         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                        <c:if test="${ member == null }">
-                        <li class="nav-item"><a class="nav-link" href="/main">상품목록</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/admin/index">기업목록</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/admin/index">개인 판매 신청</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/admin/index">기업 판매 신청</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/admin/goodsenroll">고객센터</a></li>
-                        </c:if>
-                        <c:if test="${ member != null }">
-                        	<c:if test="${ member.adminCk == 0 }">
-                        <li class="nav-item"><a class="nav-link" href="/admin/index">상품목록</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/admin/index">기업목록</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/admin/index">개인 판매 신청</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/admin/index">기업 판매 신청</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/admin/goodsenroll">고객센터</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/admin/goodsenroll">로그아웃</a></li>
-                        </c:if>
-                        </c:if>
-                            	<c:if test="${ member.adminCk == 1 }">
                             <li class="nav-item"><a class="nav-link" href="/admin/goodsenroll">상품등록</a></li>
                             <li class="nav-item"><a class="nav-link" href="/admin/goodsManage">상품목록</a></li>
                             <li class="nav-item"><a class="nav-link" href="/admin/authorEnroll">판매자등록</a></li>
                             <li class="nav-item"><a class="nav-link" href="/admin/authorManage">판매자관리</a></li>
                             <li class="nav-item"><a class="nav-link" href="/admin/qna">고객센터</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/member/join">회원가입</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/member/login">로그인</a></li>
+                            <c:if test="${ member != null }">
+                            	<c:if test="${ member.adminCk == 1 }">
                             <li class="nav-item"><a class="nav-link" href="/admin/index">관리자 페이지</a></li>
+                            </c:if>
                             </c:if>
                             <li>
 	                        <a id="gnb_logout_button">로그아웃</a>
@@ -73,6 +60,28 @@
                     </div>
                 </div>
             </nav> 
+            <div class="navi_bar_area">
+			<div class="dropdown">
+			    <button class="dropbtn">개인
+			      <i class="fa fa-caret-down"></i>
+			    </button>
+			    <div class="dropdown-content">
+			    	<c:forEach items="${cate1}" var="cate"> 
+			    		<a href="search?type=C&cateCode=${cate.cateCode}">${cate.cateName}</a>
+			    	</c:forEach>	      		      
+			    </div>			
+			</div>
+			<div class="dropdown">
+			    <button class="dropbtn">기업
+			      <i class="fa fa-caret-down"></i>
+			    </button>
+			    <div class="dropdown-content">
+			    	<c:forEach items="${cate2}" var="cate"> 
+			    		<a href="search?type=C&cateCode=${cate.cateCode}">${cate.cateName}</a>
+			    	</c:forEach>       		      		      
+			    </div>			
+			</div>
+		</div>
 <div class="content_area">
 <!-- 게시물 o -->
 			<c:if test="${listcheck != 'empty'}">

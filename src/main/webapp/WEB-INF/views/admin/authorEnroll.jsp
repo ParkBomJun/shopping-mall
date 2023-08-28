@@ -37,11 +37,11 @@
                     	<form action="/admin/authorEnroll.do" method="post" id="enrollForm">
                     		<div class="form_section">
                     			<div class="form_section_title">
-                    				<label>판매자 이름</label>
+                    				<label>판매자 ID</label>
                     			</div>
                     			<div class="form_section_content">
                     				<input name="authorName">
-                    				<span id="warn_authorName">판매자 이름을 입력 해주세요.</span>
+                    				<span id="warn_authorName">판매자 ID를 입력 해주세요.</span>
                     			</div>
                     		</div>
                     		<div class="form_section">

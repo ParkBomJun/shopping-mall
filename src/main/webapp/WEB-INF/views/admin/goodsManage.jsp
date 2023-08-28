@@ -46,7 +46,7 @@
 	                    			<tr>
 										<td class="th_column_1">상품 번호</td>
 	                    				<td class="th_column_2">상품 이름</td>
-	                    				<td class="th_column_3">판매자 이름</td>
+	                    				<td class="th_column_3">판매자 ID</td>
 	                    				<td class="th_column_4">카테고리</td>
 	                    				<td class="th_column_5">재고</td>
 	                    				<td class="th_column_6">등록날짜</td>

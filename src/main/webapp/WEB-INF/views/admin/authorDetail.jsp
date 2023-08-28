@@ -42,7 +42,7 @@
                    		</div>                    
                    		<div class="form_section">
                    			<div class="form_section_title">
-                   				<label>판매자 이름</label>
+                   				<label>판매자 ID</label>
                    			</div>
                    			<div class="form_section_content">
                    				<input class="input_block" name="authorName" readonly="readonly" value="<c:out value='${authorInfo.authorName }'></c:out>" >

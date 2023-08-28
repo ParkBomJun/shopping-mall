@@ -43,9 +43,10 @@ public class MemberController {
 			logger.info("로그인/회원가입 페이지 진입");
 		}
 		
+	
 	//오류 페이지 이동
 		@RequestMapping(value="/error", method=RequestMethod.GET)
-		public void error() {
+		public void errorGET() {
 			
 			logger.info("아이디/비밀번호 오류");
 		}
@@ -158,6 +159,8 @@ public class MemberController {
 	        
 	        return "redirect:/index";
 	    }
+	    
+	    
 	    
 	    /* 메인페이지 로그아웃 */
 	    @RequestMapping(value="logout.do", method=RequestMethod.GET)

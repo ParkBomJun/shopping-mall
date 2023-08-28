@@ -28,7 +28,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-12 col-xxl-12">
                             <div class="text-center my-5 ">
-                                <h1 class="fw-bolder mb-5">판매자 상세 페이지입니다</h1>
+                                <h1 class="fw-bolder mb-5">판매자 수정 페이지입니다</h1>
                                 <div class="admin_content_wrap">
                     <div class="admin_content_main">
                     	<form id="modifyForm" action="/admin/authorModify" method="post">

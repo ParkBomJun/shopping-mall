@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.prochel.mapper.AttachMapper;
 import com.prochel.mapper.ProdMapper;
 import com.prochel.model.AttachImageVO;
+import com.prochel.model.CateVO;
 import com.prochel.model.Criteria;
 import com.prochel.model.ProdVO;
 
@@ -59,6 +60,21 @@ public class ProdServiceImpl implements ProdService {
 		
 		return list;
 	}
+	
+	/* 국내 카테고리 리스트 */
+	@Override
+	public List<CateVO> getCateCode1() {
+
+		return prodMapper.getCateCode1();
+	}
+
+	/* 외국 카테고리 리스트 */
+	@Override
+	public List<CateVO> getCateCode2() {
+
+		return prodMapper.getCateCode2();
+	}		
+
 
 	/* 상품 총 갯수 */
 	@Override

@@ -35,7 +35,7 @@
 	                    		<thead>
 	                    			<tr>
 	                    				<td class="th_column_1">판매자 번호</td>
-	                    				<td class="th_column_2">판매자 이름</td>
+	                    				<td class="th_column_2">판매자 ID</td>
 	                    				<td class="th_column_3">식별번호</td>
 	                    				<td class="th_column_4">등록 날짜</td>
 	                    				<td class="th_column_5">수정 날짜</td>

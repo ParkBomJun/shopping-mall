@@ -33,7 +33,6 @@
                 			<div class="search_input">
                 				<select name="type">
                 					<option value="T">물품명</option>
-                					<option value="A">판매자</option>
                 				</select>
                 				<input type="text" name="keyword">
                     			<button class='search_btn'>검 색</button>                				
@@ -42,7 +41,7 @@
                 	</div>
                         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                         <c:if test="${ member == null }">
-                        <li class="nav-item"><a class="nav-link" href="/admin/index">상품목록</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/main">상품목록</a></li>
                         <li class="nav-item"><a class="nav-link" href="/admin/index">기업목록</a></li>
                         <li class="nav-item"><a class="nav-link" href="/admin/index">개인 판매 신청</a></li>
                         <li class="nav-item"><a class="nav-link" href="/admin/index">기업 판매 신청</a></li>

@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="subject_name_warp">
-			<span>판매자 선택</span>
+			<span>판매자 ID 선택</span>
 		</div>
 		<div class="content_wrap">
                	<!-- 게시물 표 영역 -->
@@ -26,7 +26,7 @@
 	                    		<thead>
 	                    			<tr>
 	                    				<td class="th_column_1">판매자 번호</td>
-	                    				<td class="th_column_2">판매자 이름</td>
+	                    				<td class="th_column_2">판매자 ID</td>
 	                    				<td class="th_column_3">식별번호</td>
 	                    			</tr>
 	                    		</thead>

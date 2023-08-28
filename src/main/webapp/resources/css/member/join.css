@@ -252,14 +252,15 @@ background text
   cursor: pointer;
 }
 
-/* 비밀번호 확인 일치 유효성검사 */
-.pwck_input_re_1{
-        color : green;
-        display : none;    
+/* 중복아이디 존재하지 않는경우 */
+.id_input_re_1{
+		color : green;
+		display : none;
 }
-.pwck_input_re_2{
-        color : red;
-        display : none;    
+	/* 중복아이디 존재하는 경우 */
+.id_input_re_2{
+		color : red;
+		display : none;
 }
 
 .btn_address_up {
@@ -442,6 +443,7 @@ background text
 
 .final_id_ck{
 	display: none;
+	font-size:14px;
 }
 .final_pw_ck{
 	display: none;
@@ -476,17 +478,6 @@ background text
   cursor: pointer;
 }
 
-/* 중복아이디 존재하지 않는경우 */
-.id_input_re_1{
-		color : green;
-		display : none;
-}
-	/* 중복아이디 존재하는 경우 */
-.id_input_re_2{
-		color : red;
-		display : none;
-}
-
 /* 비밀번호 확인 일치 유효성검사 */
 .pwck_input_re_1{
 		color : green;
@@ -495,6 +486,12 @@ background text
 }
 .pwck_input_re_2{
 		color : red;
+		display : none;
+		font-size:14px;	
+}
+
+.pwck_input_re_3{
+		color : blue;
 		display : none;
 		font-size:14px;	
 }

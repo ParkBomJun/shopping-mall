@@ -20,7 +20,7 @@
   	<!-- 카테고리 리스트 -->
   	<select id="cateList" resultType="com.prochel.model.CateVO">
   	
-  		select * from prod_bcate order by catecode
+  		select * from prod_bcate order by cateCode
   	
   	</select>
   	

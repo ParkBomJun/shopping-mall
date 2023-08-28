@@ -79,7 +79,7 @@ public class MainController {
 	}
 	
 	/* 상품 검색 */
-	@GetMapping("search")
+	@GetMapping("/search")
 	public String searchGoodsGET(Criteria cri, Model model) {
 		
 		logger.info("cri : " + cri);
@@ -92,13 +92,21 @@ public class MainController {
 		} else {
 			model.addAttribute("listcheck", "empty");
 			
-			return "search";
+			return "/search";
 		}
 		
 		model.addAttribute("pageMaker", new PageDTO(cri, prodService.goodsGetTotal(cri)));
 		
 		
-		return "search";
+		return "/search";
 		
 	}
+	
+	//상품목록 페이지 이동
+			@RequestMapping(value = "/main", method = RequestMethod.GET)
+			public void mainPageGET(Model model) {
+				
+				model.addAttribute("cate1", prodService.getCateCode1());
+				model.addAttribute("cate2", prodService.getCateCode2());
+			}
 }

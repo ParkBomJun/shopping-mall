@@ -51,21 +51,24 @@
        </div>
        
  <div class="cont_form_login">
- <form id="Login_form" method="post" style="margin-top: 126px;">
+ <form id="Login_form" method="post" style="display: block;opacity: 1;margin-top: 66px;">
    <h2 style="margin-right: 2px;">LOGIN</h2>
    <div class="Login_wrap">
    <div class="id_input_box">
- <input class="id_input" name="memberId" placeholder="아이디" style="margin-top: 10px;">
+ <input class="id_iput" name="memberId" placeholder="아이디" style="margin-top: 10px;width: 300px;height: 60px;">
  	</div>
  	</div>
  	<div class="pw_wrap">
  	<div class="pw_input_box">
-  <input class="pw_iput" name="memberPw" placeholder="비밀번호" style="margin-top: 10px;">
+  <input class="pw_iput" name="memberPw" placeholder="비밀번호" style="margin-top: 10px;width: 300px;height: 60px;">
 	</div>
 	</div>
 	
  	<div class="Login_button_wrap">
- 		<input type="button" class="Login_button" value="로그인">
+ 		<input type="button" class="Login_button" value="로그인" style="
+    width: 305px;
+    height: 40px;
+	">
  	</div>
 </form>
   </div>
@@ -80,21 +83,17 @@
 <input class="id_input" name="memberId" type="text" placeholder="아이디" />
 <span class="id_input_re_1">사용 가능한 아이디입니다.</span>
 <span class="id_input_re_2">아이디가 이미 존재합니다.</span>
-<span class="final_id_ck">아이디를 입력해주세요.</span>
 
 <input class="pw_input" name="memberPw" type="password" placeholder="비밀번호" />
-<span class="final_pw_ck">비밀번호를 입력해주세요.</span>
 
 <input class="pwck_input" type="password" placeholder="비밀번호 확인" />
-<span class="final_pwck_ck">비밀번호 확인을 입력해주세요.</span>
 <span class="pwck_input_re_1">비밀번호가 일치합니다.</span>
 <span class="pwck_input_re_2">비밀번호가 일치하지 않습니다.</span>
+<span class="pwck_input_re_3">10자 이상의 영어,특수문자,숫자를 써야합니다</span>
 
 <input class="user_input" name="memberName" type="text" placeholder="이름" />
-<span class="final_name_ck">이름을 입력해주세요.</span>
 
 <input class="mail_input" name="memberMail" type="text" placeholder="이메일" />
-<span class="final_mail_ck">이메일을 입력해주세요.</span>
 <span class="mail_input_box_warn"></span>
 
 <div class="mail_check_wrap">
@@ -111,7 +110,6 @@
 <button type="button" class="btn_address_up" onclick="execution_daum_address()">주소 찾기 </button>
 <input class="address_input_2" name="memberAddr2" type="text" placeholder="상세주소" readonly="readonly"/>
 <input class="address_input_3" name="memberAddr3" type="text" placeholder="참고항목" readonly="readonly"/>
-<span class="final_addr_ck">주소를 입력해주세요.</span>
 <button class="btn_sign_up_1">SIGN UP</button>
 </div>
 </form>
@@ -161,16 +159,7 @@ $(document).ready(function(){
         }else{
             $('.final_pw_ck').css('display', 'none');
             pwCheck = true;
-        }
-        
-        /* 비밀번호 확인 유효성 검사 */
-        if(pwck == ""){
-            $('.final_pwck_ck').css('display','block');
-            pwckCheck = false;
-        }else{
-            $('.final_pwck_ck').css('display', 'none');
-            pwckCheck = true;
-        }
+        }         
         
         /* 이름 유효성 검사 */
         if(name == ""){
@@ -202,11 +191,15 @@ $(document).ready(function(){
         
         
         /* 최종 유효성 검사 */
-        if(idCheck&&idckCheck&&pwCheck&&pwckCheck&&pwckcorCheck&&nameCheck&&mailCheck&&mailnumCheck&&addressCheck ){
+        if(idCheck&&idckCheck&&pwCheck&&pwckCheck&&pwckcorCheck&&nameCheck&&mailCheck&&mailnumCheck&&addressCheck&&pwckcorCheck ){
         	$("#join_form").attr("action", "/member/join");
             $("#join_form").submit();
+        } else if (idCheck,idckCheck,pwCheck,pwckCheck,pwckcorCheck,nameCheck,mailCheck,mailnumCheck,addressCheck,pwckcorCheck == false) {
+        	<%
+            out.println("alert('빈칸이 있거나 아이디/비밀번호 조건이 틀렸습니다');");
+        	%>
+            return false;
         }
-        
     });
 });
 
@@ -341,24 +334,42 @@ function execution_daum_address(){
 }
 
 /* 비밀번호 확인 일치 유효성 검사 */
- 
 $('.pwck_input').on("propertychange change keyup paste input", function(){
  
     var pw = $('.pw_input').val();
     var pwck = $('.pwck_input').val();
     $('.final_pwck_ck').css('display', 'none');
     
-    if(pw == pwck){
-        $('.pwck_input_re_1').css('display','block');
-        $('.pwck_input_re_2').css('display','none');
+    /* 비밀번호 양식 일치 유효성 검사 */
+    if(pwPormCheck(pw) && pwPormChecks(pwck) && pw==pwck){
+    	$('.pwck_input_re_1').css('display','block');
+    	$('.pwck_input_re_2').css('display','none');
+    	$('.pwck_input_re_3').css('display','none');
         pwckcorCheck = true;
-    }else{
-        $('.pwck_input_re_1').css('display','none');
-        $('.pwck_input_re_2').css('display','block');
-        pwckcorCheck = false;
+    } else {
+    	$('.pwck_input_re_1').css('display','none');
+    	$('.pwck_input_re_2').css('display','block');
+    	$('.pwck_input_re_3').css('display','block');
+    	pwckcorCheck = false;
     }
-         
+    
+    if(pw == "" || pwck == "") {
+    	$('.pwck_input_re_1').css('display','none');
+    	$('.pwck_input_re_2').css('display','none');
+    }
 });
+
+	/* 입력 이메일 형식 유효성 검사 */
+	function pwPormCheck(pw) {
+		 var porm = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{10,}$/;
+		 return porm.test(pw);
+	}
+	
+	/* 입력 이메일 형식 유효성 검사 */
+	function pwPormChecks(pwck) {
+		 var porm = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{10,}$/;
+		 return porm.test(pwck);
+	}
 	
 	/* 입력 이메일 형식 유효성 검사 */
 	function mailFormCheck(email) {
